@@ -1,0 +1,83 @@
+class LinkedStack:
+    class _Node:
+
+        __slots__ = '_element','_next'
+        def __init__(self, element, next):
+            self._element = element
+            self._next = next
+    def __init__(self):
+        self._head = None
+        self._size = 0
+
+    def __repr__(self):
+        l = []
+        current = self._head
+        while current is not None:
+            l.append(current._element)
+            current = current._next
+        return repr(l)
+
+    def __len__(self):
+        return self._size
+
+    def is_empty(self):
+        return self._size == 0
+
+    def push(self, e):
+        self._head = self._Node(e, self._head)
+        self._size += 1
+
+    def top(self):
+     if self.is_empty():
+        raise Exception('Stack is empty')
+     return self._head._element
+
+    def pop(self):
+        if self.is_empty():
+            raise Exception('Stack is empty')
+        answer = self._head._element
+        self._head = self._head._next
+        self._size -= 1
+        return answer
+
+def merge(list1, list2):
+    3,6,7,9,10#list1
+    1,2,5,8,9#list2
+    final_length = len(list1) + len(list2)
+    sorted_list = LinkedStack()
+    for i in range(final_length):
+        #smaller = min(item1, item2)
+        #larger = max(item1, item2)
+
+        if list1.is_empty():
+            item1 = float("inf")
+        else:
+            item1 = list1.top()
+
+        if list2.is_empty():
+            item2 = float("inf")
+        else:
+            item2 = list2.top()
+
+        if item1 > item2:
+            item = list2.pop()
+        else: #item2 < item1
+            item = list1.pop()
+
+        sorted_list.push(item)
+
+    final_list = LinkedStack()
+    while not sorted_list.is_empty():
+        final_list.push(sorted_list.pop())
+    return final_list
+
+if __name__ == "__main__":
+    l1 = LinkedStack()
+    for i in [3,6,7,9,10][::-1]:
+        l1.push(i)
+    l2 = LinkedStack()
+    for i in [1,2,5,8,9][::-1]:
+        l2.push(i)
+
+    l3 = merge(l1, l2)
+    print l3
